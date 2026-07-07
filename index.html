@@ -22,6 +22,7 @@
   --mint: #6ee7b7;
   --grass: #4ade80;
   --navy: #1e1040;
+  --cream: #fdf9f3;
   --text: #2d1b4e;
   --text-soft: #5b4a78;
   --white: #ffffff;
@@ -561,11 +562,12 @@ footer {
 .statement-full h2 {
   font-family: var(--serif); font-size: clamp(2.25rem, 5.5vw, 4.5rem);
   font-weight: 500; line-height: 1.08; position: relative; z-index: 1;
-  max-width: 800px; margin: 0 auto;
+  max-width: 800px; margin: 0 auto; color: var(--cream);
 }
 .statement-full h2 .outline {
-  -webkit-text-stroke: 1.5px rgba(255,255,255,0.35); color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255,255,255,0.55); color: transparent;
 }
+.statement-full h2 .solid { color: var(--gold-light); }
 .statement-full h2 em { font-style: italic; color: var(--gold-light); }
 .statement-full p {
   margin-top: 1.5rem; font-size: 0.9375rem; opacity: 0.55; position: relative; z-index: 1;
@@ -756,7 +758,7 @@ footer {
 
 <!-- BIG STATEMENT -->
 <section class="statement-full reveal">
-  <h2><span class="outline">Fuel your</span> hormones.<br><em>Not fight them.</em></h2>
+  <h2><span class="outline">Fuel your</span> <span class="solid">hormones.</span><br><em>Not fight them.</em></h2>
   <p>Science without sterility. Culture without compromise.</p>
 </section>
 
