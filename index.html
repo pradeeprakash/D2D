@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diet2Dine — NutriBloom</title>
+<title>Diet2Dine — Clinical Nutrition</title>
+<link rel="icon" href="assets/images/d2d-logo.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/images/d2d-logo.png">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -65,10 +67,14 @@ nav.scrolled {
   padding: 0.75rem 2.5rem;
 }
 .logo {
-  font-family: var(--serif); font-size: 1.4rem; font-weight: 600;
-  background: linear-gradient(135deg, var(--lavender-700), var(--purple-soft));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  display: inline-flex; align-items: center; text-decoration: none;
 }
+.logo-img {
+  height: 46px; width: 46px; object-fit: contain;
+  transition: transform 0.3s var(--ease);
+}
+.logo:hover .logo-img { transform: scale(1.04); }
+nav.scrolled .logo-img { height: 42px; width: 42px; }
 .nav-links { display: flex; gap: 2rem; list-style: none; }
 .nav-links a {
   text-decoration: none; color: var(--text-soft); font-size: 0.8125rem;
@@ -174,6 +180,9 @@ nav.scrolled {
   cursor: pointer; transition: all 0.4s var(--ease);
 }
 .btn-secondary:hover { border-color: var(--lavender-500); background: var(--lavender-100); }
+a.nav-cta, a.btn-primary, a.btn-secondary {
+  text-decoration: none; display: inline-block; text-align: center;
+}
 
 /* Hero visual cluster */
 .hero-visual { position: relative; z-index: 2; height: 520px; display: flex; align-items: center; justify-content: center; }
@@ -471,17 +480,21 @@ nav.scrolled {
   box-shadow: 0 8px 32px rgba(0,0,0,0.15);
 }
 .cta .btn-primary:hover { background: var(--gold-light); color: var(--navy); }
+.cta-call { margin-top: 1.25rem; font-size: 0.875rem; }
+.cta-call a { color: rgba(255,255,255,0.75); text-decoration: underline; text-underline-offset: 3px; transition: color 0.3s; }
+.cta-call a:hover { color: var(--gold-light); }
 
 footer {
   padding: 2rem 2.5rem; background: var(--navy); color: rgba(255,255,255,0.5);
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
   font-size: 0.8125rem;
 }
-.footer-logo {
-  font-family: var(--serif); font-size: 1.2rem;
-  background: linear-gradient(135deg, var(--lavender-300), var(--gold-light));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+.footer-brand { display: flex; align-items: center; }
+.footer-logo-img { height: 42px; width: 42px; object-fit: contain; }
+.footer-call {
+  color: rgba(255,255,255,0.65); text-decoration: none; transition: color 0.3s;
 }
+.footer-call:hover { color: var(--gold-light); }
 
 /* ── QUOTE SYSTEM ── */
 .quote-marquee-wrap {
@@ -605,14 +618,16 @@ footer {
 <body>
 
 <nav id="nav">
-  <div class="logo">Diet2Dine</div>
+  <a href="#" class="logo" aria-label="Diet2Dine home">
+    <img class="logo-img" src="assets/images/d2d-logo.png" alt="Diet2Dine">
+  </a>
   <ul class="nav-links">
     <li><a href="#foods">Foods</a></li>
     <li><a href="#philosophy">Approach</a></li>
     <li><a href="#assess">Assessment</a></li>
     <li><a href="#programs">Programs</a></li>
   </ul>
-  <button class="nav-cta">Book Consult</button>
+  <a class="nav-cta" href="https://wa.me/919443857389?text=Hi%20Rumetha%2C%20I%27d%20like%20to%20book%20a%20consultation." target="_blank" rel="noopener noreferrer">Book Consult</a>
   <button class="menu-btn">☰</button>
 </nav>
 
@@ -629,7 +644,7 @@ footer {
     <p>PCOS, thyroid & postpartum coaching — through mango, millets, idli & sambar. Not war. Not shame. Just science that listens. Rumetha G.S, M.Sc.</p>
     <div class="hero-btns">
       <button class="btn-primary">Start 2-Min Assessment</button>
-      <button class="btn-secondary">Book Consult</button>
+      <a class="btn-secondary" href="https://wa.me/919443857389?text=Hi%20Rumetha%2C%20I%27d%20like%20to%20book%20a%20consultation." target="_blank" rel="noopener noreferrer">Book Consult</a>
     </div>
   </div>
 
@@ -807,7 +822,7 @@ footer {
         Bloating / IBS
       </div>
       <div class="quiz-insight" id="insight">Insulin resistance may affect your cycle. We'll balance South Indian carbs — mango, rice, millets — not remove them.</div>
-      <button class="btn-primary" style="width:100%;margin-top:1.25rem">Book Strategy Call</button>
+      <a class="btn-primary" style="width:100%;margin-top:1.25rem" href="https://wa.me/919443857389?text=Hi%20Rumetha%2C%20I%27d%20like%20to%20book%20a%20strategy%20call." target="_blank" rel="noopener noreferrer">Book Strategy Call</a>
     </div>
   </div>
 </section>
@@ -873,13 +888,16 @@ footer {
   <div class="cta-content reveal">
     <h2>Your body already knows.<br><em>Let's decode it together.</em></h2>
     <p>A personal consultation with Rumetha G.S. One conversation. No shame. No starvation.</p>
-    <button class="btn-primary">Book Consultation</button>
+    <a class="btn-primary" href="https://wa.me/919443857389?text=Hi%20Rumetha%2C%20I%27d%20like%20to%20book%20a%20consultation." target="_blank" rel="noopener noreferrer">Book Consultation</a>
   </div>
 </section>
 
 <footer>
-  <div class="footer-logo">Diet2Dine</div>
+  <div class="footer-brand">
+    <img class="footer-logo-img" src="assets/images/d2d-logo.png" alt="Diet2Dine">
+  </div>
   <span>© 2026 Rumetha G.S · M.Sc. Food & Nutrition</span>
+  <a class="footer-call" href="tel:+919443857389">Prefer a call? +91 94438 57389</a>
   <span>Lavender & Bloom Edition</span>
 </footer>
 
