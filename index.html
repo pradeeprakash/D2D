@@ -38,9 +38,14 @@ html { scroll-behavior: smooth; }
 body {
   font-family: var(--sans); background: var(--lavender-50); color: var(--text);
   overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
 }
+body.page-ready { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
+  body { opacity: 1; }
+  .reveal, .trust-item { opacity: 1 !important; transform: none !important; }
 }
 
 /* ── ANIMATIONS ── */
@@ -271,7 +276,14 @@ a.nav-cta, a.btn-primary, a.btn-secondary {
 .trust-item {
   display: flex; align-items: center; gap: 0.6rem;
   font-size: 0.8125rem; font-weight: 500; color: var(--text-soft);
+  opacity: 0; transform: translateY(18px);
+  transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
 }
+body.page-ready .trust-item { opacity: 1; transform: none; }
+body.page-ready .trust-item:nth-child(1) { transition-delay: 0.85s; }
+body.page-ready .trust-item:nth-child(2) { transition-delay: 0.95s; }
+body.page-ready .trust-item:nth-child(3) { transition-delay: 1.05s; }
+body.page-ready .trust-item:nth-child(4) { transition-delay: 1.15s; }
 .trust-item img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
 
 /* ── FOOD GALLERY ── */
@@ -354,6 +366,69 @@ a.nav-cta, a.btn-primary, a.btn-secondary {
 }
 .pillar h3 { font-family: var(--serif); font-size: 1.35rem; color: var(--lavender-700); margin-bottom: 0.5rem; }
 .pillar p { font-size: 0.875rem; line-height: 1.75; color: var(--text-soft); }
+
+/* ── ABOUT ── */
+.about {
+  padding: 6rem 2.5rem; background: white; position: relative;
+}
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+  align-items: center; max-width: 1100px; margin: 0 auto;
+}
+.about-grid h2 {
+  font-family: var(--serif); font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 500; line-height: 1.15; color: var(--navy);
+}
+.about-grid h2 em { font-style: italic; color: var(--lavender-600); }
+.about-grid p {
+  color: var(--text-soft); line-height: 1.8; margin-top: 1.25rem;
+}
+.about-visual {
+  position: relative; border-radius: 24px; overflow: hidden;
+  box-shadow: 0 16px 48px rgba(124, 58, 237, 0.12);
+}
+.about-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.about-stats {
+  display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;
+}
+.about-stat strong {
+  display: block; font-family: var(--serif); font-size: 1.75rem;
+  color: var(--lavender-700); font-weight: 500;
+}
+.about-stat span { font-size: 0.8125rem; color: var(--text-soft); }
+
+/* ── SPECIALTIES ── */
+.specialties {
+  padding: 6rem 2.5rem;
+  background: linear-gradient(180deg, white, var(--lavender-50));
+  position: relative;
+}
+.specialty-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
+  max-width: 1100px; margin: 3rem auto 0;
+}
+.specialty-item {
+  background: white; border-radius: 18px; padding: 1.5rem 1.25rem;
+  border: 1px solid var(--lavender-200);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.06);
+  transition: all 0.4s var(--ease);
+  text-align: center;
+}
+.specialty-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(124, 58, 237, 0.12);
+  border-color: var(--lavender-300);
+}
+.specialty-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--lavender-100); color: var(--lavender-600);
+  font-size: 0.75rem; font-weight: 700; margin-bottom: 0.75rem;
+}
+.specialty-item h3 {
+  font-family: var(--serif); font-size: 1rem; font-weight: 500;
+  color: var(--navy); line-height: 1.35;
+}
 
 /* ── ASSESSMENT ── */
 .assessment {
@@ -595,15 +670,38 @@ footer {
   color: var(--gold-light); letter-spacing: 0.02em; margin-top: 0.35em;
 }
 
-.reveal { opacity: 0; transform: translateY(36px); transition: all 0.9s var(--ease); }
+.reveal {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity 0.75s var(--ease), transform 0.75s var(--ease);
+}
 .reveal.vis { opacity: 1; transform: none; }
+.reveal.reveal-left { transform: translateX(-44px); }
+.reveal.reveal-right { transform: translateX(44px); }
+.reveal.reveal-scale { transform: scale(0.92) translateY(20px); }
+.reveal.reveal-right.reveal-scale { transform: translateX(44px) scale(0.92); }
+.reveal.reveal-left.vis,
+.reveal.reveal-right.vis,
+.reveal.reveal-scale.vis,
+.reveal.reveal-right.reveal-scale.vis { opacity: 1; transform: none; }
 
 @media (max-width: 900px) {
-  .quote-strip { grid-template-columns: 1fr; }
+  .reveal.reveal-left,
+  .reveal.reveal-right,
+  .reveal.reveal-right.reveal-scale { transform: translateY(32px); }
+  .reveal.reveal-scale { transform: scale(0.96) translateY(24px); }
 }
 
 @media (max-width: 900px) {
-  .hero, .assess-grid, .food-mosaic, .pillar-grid, .prog-cards, .testi-grid { grid-template-columns: 1fr; }
+  .specialty-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .specialty-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  .quote-strip { grid-template-columns: 1fr; }
+  .hero, .about-grid, .assess-grid, .food-mosaic, .pillar-grid, .prog-cards, .testi-grid { grid-template-columns: 1fr; }
   .food-tile.large, .food-tile.wide { grid-row: auto; grid-column: auto; }
   .food-mosaic { grid-template-rows: auto; }
   .hero-visual { height: 400px; margin-top: 2rem; }
@@ -622,12 +720,14 @@ footer {
     <img class="logo-img" src="assets/images/d2d-logo.png" alt="Diet2Dine">
   </a>
   <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#specialties">Specialties</a></li>
     <li><a href="#foods">Foods</a></li>
     <li><a href="#philosophy">Approach</a></li>
     <li><a href="#assess">Assessment</a></li>
     <li><a href="#programs">Programs</a></li>
   </ul>
-  <a class="nav-cta" href="https://wa.me/919443857389?text=Hi%20Rumetha%2C%20I%27d%20like%20to%20book%20a%20consultation." target="_blank" rel="noopener noreferrer">Book Consult</a>
+  <a class="nav-cta" href="https://wa.link/rqw9nn" target="_blank" rel="noopener noreferrer">Book Consult</a>
   <button class="menu-btn">☰</button>
 </nav>
 
@@ -644,7 +744,7 @@ footer {
     <p>PCOS, thyroid & postpartum coaching — through mango, millets, idli & sambar. Not war. Not shame. Just science that listens. Rumetha G.S, M.Sc.</p>
     <div class="hero-btns">
       <button class="btn-primary">Start 2-Min Assessment</button>
-      <a class="btn-secondary" href="https://wa.me/919443857389?text=Hi%20Rumetha%2C%20I%27d%20like%20to%20book%20a%20consultation." target="_blank" rel="noopener noreferrer">Book Consult</a>
+      <a class="btn-secondary" href="https://wa.link/rqw9nn" target="_blank" rel="noopener noreferrer">Book Consult</a>
     </div>
   </div>
 
@@ -675,8 +775,49 @@ footer {
   <div class="trust-item"><img src="assets/images/flowers.jpg" alt=""> M.Sc. Food & Nutrition</div>
   <div class="trust-item"><img src="assets/images/herbs-grass.jpg" alt=""> South Indian Plans</div>
   <div class="trust-item"><img src="assets/images/grains.jpg" alt=""> Millets & Grains</div>
-  <div class="trust-item"><img src="assets/images/lavender.jpg" alt=""> 1,000+ Women</div>
+  <div class="trust-item"><img src="assets/images/lavender.jpg" alt=""> 3,000+ Clients</div>
 </div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="reveal reveal-left">
+      <div class="section-tag">✦ Meet Your Dietitian</div>
+      <h2>Ready to Take Control of <em>Your Health?</em></h2>
+      <p>Hi, I'm Rumetha G.S., a qualified Dietitian with an M.Sc. in Food and Nutrition and 4+ years of experience in the field of nutrition. Over the years, I have helped 3,000+ individuals achieve their health and wellness goals through personalized, evidence-based nutrition guidance.</p>
+      <p>I believe that nutrition is not about strict diets or quick fixes—it's about building healthy habits that fit your lifestyle. My approach is science-based, practical, and sustainable, helping you make realistic changes that lead to lasting results.</p>
+      <div class="about-stats">
+        <div class="about-stat"><strong>3,000+</strong><span>Clients guided</span></div>
+        <div class="about-stat"><strong>4+ yrs</strong><span>Clinical experience</span></div>
+        <div class="about-stat"><strong>M.Sc.</strong><span>Food & Nutrition</span></div>
+      </div>
+    </div>
+    <div class="about-visual reveal reveal-right reveal-scale">
+      <img src="assets/images/rumetha-hero.png" alt="Rumetha G.S. — Qualified Dietitian">
+    </div>
+  </div>
+</section>
+
+<!-- SPECIALTIES -->
+<section class="specialties" id="specialties">
+  <div class="section-head reveal">
+    <div class="section-tag">✦ Areas of Expertise</div>
+    <h2>Personalized nutrition for <em>your</em> health goals.</h2>
+    <p>Evidence-based guidance across a wide range of conditions and lifestyle needs — tailored to your body, your culture, your kitchen.</p>
+  </div>
+  <div class="specialty-grid">
+    <div class="specialty-item reveal"><span class="specialty-num">1</span><h3>Weight Loss</h3></div>
+    <div class="specialty-item reveal"><span class="specialty-num">2</span><h3>Body Recomposition</h3></div>
+    <div class="specialty-item reveal"><span class="specialty-num">3</span><h3>PCOS</h3></div>
+    <div class="specialty-item reveal"><span class="specialty-num">4</span><h3>Type 2 Diabetes</h3></div>
+    <div class="specialty-item reveal"><span class="specialty-num">5</span><h3>Thyroid Health</h3></div>
+    <div class="specialty-item reveal"><span class="specialty-num">6</span><h3>Preconception Nutrition</h3></div>
+    <div class="specialty-item reveal"><span class="specialty-num">7</span><h3>Postpartum Care</h3></div>
+    <div class="specialty-item reveal"><span class="specialty-num">8</span><h3>Fatty Liver</h3></div>
+    <div class="specialty-item reveal"><span class="specialty-num">9</span><h3>Long-term Sustainable Lifestyle Changes</h3></div>
+    <div class="specialty-item reveal"><span class="specialty-num">10</span><h3>Others</h3></div>
+  </div>
+</section>
 
 <!-- QUOTE MARQUEE -->
 <div class="quote-marquee-wrap">
@@ -822,7 +963,7 @@ footer {
         Bloating / IBS
       </div>
       <div class="quiz-insight" id="insight">Insulin resistance may affect your cycle. We'll balance South Indian carbs — mango, rice, millets — not remove them.</div>
-      <a class="btn-primary" style="width:100%;margin-top:1.25rem" href="https://wa.me/919443857389?text=Hi%20Rumetha%2C%20I%27d%20like%20to%20book%20a%20strategy%20call." target="_blank" rel="noopener noreferrer">Book Strategy Call</a>
+      <a class="btn-primary" style="width:100%;margin-top:1.25rem" href="https://wa.link/rqw9nn" target="_blank" rel="noopener noreferrer">Book Strategy Call</a>
     </div>
   </div>
 </section>
@@ -888,7 +1029,7 @@ footer {
   <div class="cta-content reveal">
     <h2>Your body already knows.<br><em>Let's decode it together.</em></h2>
     <p>A personal consultation with Rumetha G.S. One conversation. No shame. No starvation.</p>
-    <a class="btn-primary" href="https://wa.me/919443857389?text=Hi%20Rumetha%2C%20I%27d%20like%20to%20book%20a%20consultation." target="_blank" rel="noopener noreferrer">Book Consultation</a>
+    <a class="btn-primary" href="https://wa.link/rqw9nn" target="_blank" rel="noopener noreferrer">Book Consultation</a>
   </div>
 </section>
 
@@ -897,7 +1038,7 @@ footer {
     <img class="footer-logo-img" src="assets/images/d2d-logo.png" alt="Diet2Dine">
   </div>
   <span>© 2026 Rumetha G.S · M.Sc. Food & Nutrition</span>
-  <a class="footer-call" href="tel:+919443857389">Prefer a call? +91 94438 57389</a>
+  <a class="footer-call" href="tel:+919368382501">Prefer a call? +91 93633 82501</a>
   <span>Lavender & Bloom Edition</span>
 </footer>
 
@@ -960,25 +1101,37 @@ document.querySelectorAll('.quiz-opt').forEach(opt => {
   });
 });
 
-// Scroll reveal
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+// Page load fade
+requestAnimationFrame(() => document.body.classList.add('page-ready'));
 
-// Parallax on hero glows
-document.addEventListener('mousemove', e => {
-  const x = (e.clientX / innerWidth - 0.5) * 30;
-  const y = (e.clientY / innerHeight - 0.5) * 20;
-  document.querySelectorAll('.hero-glow').forEach((g, i) => {
-    g.style.transform = `translate(${x * (i + 1) * 0.3}px, ${y * (i + 1) * 0.3}px)`;
+// Scroll reveal with stagger
+const staggerParents = '.specialty-grid, .pillar-grid, .prog-cards, .testi-grid, .food-mosaic, .quote-strip, .about-stats';
+document.querySelectorAll(staggerParents).forEach(parent => {
+  parent.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.08}s`;
   });
 });
 
-// Stagger food tiles on scroll
-document.querySelectorAll('.food-tile').forEach((tile, i) => {
-  tile.style.transitionDelay = `${i * 0.08}s`;
-});
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('vis');
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// Parallax on hero glows (skip if reduced motion)
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.addEventListener('mousemove', e => {
+    const x = (e.clientX / innerWidth - 0.5) * 30;
+    const y = (e.clientY / innerHeight - 0.5) * 20;
+    document.querySelectorAll('.hero-glow').forEach((g, i) => {
+      g.style.transform = `translate(${x * (i + 1) * 0.3}px, ${y * (i + 1) * 0.3}px)`;
+    });
+  });
+}
 </script>
 </body>
 </html>
