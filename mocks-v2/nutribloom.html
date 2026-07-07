@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diet2Dine — NutriBloom</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --lavender-50: #faf8ff;
+  --lavender-100: #f3eeff;
+  --lavender-200: #e9e0ff;
+  --lavender-300: #d4c4ff;
+  --lavender-400: #b794f6;
+  --lavender-500: #9f7aea;
+  --lavender-600: #805ad5;
+  --lavender-700: #6b46c1;
+  --purple-deep: #4c1d95;
+  --purple-soft: #7c3aed;
+  --gold: #d4a853;
+  --gold-light: #f0d78c;
+  --mint: #6ee7b7;
+  --grass: #4ade80;
+  --navy: #1e1040;
+  --text: #2d1b4e;
+  --text-soft: #5b4a78;
+  --white: #ffffff;
+  --serif: 'Fraunces', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans); background: var(--lavender-50); color: var(--text);
+  overflow-x: hidden; -webkit-font-smoothing: antialiased;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ── ANIMATIONS ── */
+@keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-16px) rotate(2deg); } }
+@keyframes float-slow { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.02); } }
+@keyframes sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes pulse-glow { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
+@keyframes drift { 0% { transform: translate(0, 0); } 33% { transform: translate(8px, -12px); } 66% { transform: translate(-6px, 8px); } }
+@keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+@keyframes bloom-in { from { opacity: 0; transform: scale(0.8) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+@keyframes orbit { from { transform: rotate(0deg) translateX(140px) rotate(0deg); } to { transform: rotate(360deg) translateX(140px) rotate(-360deg); } }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 1rem 2.5rem; display: flex; justify-content: space-between; align-items: center;
+  background: rgba(250, 248, 255, 0.75); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(159, 122, 234, 0.12);
+  transition: all 0.5s var(--ease);
+}
+nav.scrolled {
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.1);
+  padding: 0.75rem 2.5rem;
+}
+.logo {
+  font-family: var(--serif); font-size: 1.4rem; font-weight: 600;
+  background: linear-gradient(135deg, var(--lavender-700), var(--purple-soft));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  text-decoration: none; color: var(--text-soft); font-size: 0.8125rem;
+  font-weight: 500; transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--lavender-600); }
+.nav-cta {
+  background: linear-gradient(135deg, var(--lavender-500), var(--purple-soft));
+  color: white; border: none; padding: 0.7rem 1.5rem; border-radius: 100px;
+  font-family: var(--sans); font-weight: 600; font-size: 0.8125rem; cursor: pointer;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35);
+  transition: all 0.4s var(--ease);
+}
+.nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(124, 58, 237, 0.45); }
+.menu-btn { display: none; background: none; border: none; font-size: 1.25rem; cursor: pointer; color: var(--lavender-700); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh; position: relative; overflow: hidden;
+  background: linear-gradient(145deg, var(--lavender-100) 0%, var(--lavender-50) 40%, #ede4ff 100%);
+  display: grid; grid-template-columns: 1fr 1fr; align-items: center;
+  padding: 7rem 2.5rem 4rem; gap: 2rem;
+}
+.hero-glow {
+  position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none;
+  animation: pulse-glow 8s ease-in-out infinite;
+}
+.hero-glow-1 { width: 500px; height: 500px; background: rgba(183, 148, 246, 0.35); top: -10%; right: 10%; }
+.hero-glow-2 { width: 400px; height: 400px; background: rgba(110, 231, 183, 0.2); bottom: 5%; left: -5%; animation-delay: -3s; }
+.hero-glow-3 { width: 300px; height: 300px; background: rgba(212, 168, 83, 0.15); top: 40%; left: 30%; animation-delay: -5s; }
+
+/* Hero floating images — scoped to portrait column only */
+.hero-img {
+  position: absolute; border-radius: 50%; object-fit: cover;
+  box-shadow: 0 12px 40px rgba(124, 58, 237, 0.2);
+  border: 3px solid rgba(255,255,255,0.8);
+  z-index: 1; pointer-events: none;
+}
+.hero-img.lavender-field {
+  width: 120px; height: 120px; top: 2%; right: 4%;
+  animation: float 7s ease-in-out infinite;
+}
+.hero-img.mango {
+  width: 80px; height: 80px; bottom: 22%; left: 2%;
+  animation: float 5s ease-in-out infinite -1s;
+  border-radius: 20px;
+}
+.hero-img.flowers {
+  width: 100px; height: 100px; top: 8%; left: 0;
+  animation: drift 9s ease-in-out infinite;
+}
+.hero-img.grass {
+  width: 110px; height: 72px; bottom: 6%; right: 2%;
+  border-radius: 16px; animation: sway 6s ease-in-out infinite;
+}
+
+.hero-content { position: relative; z-index: 3; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(255,255,255,0.7); backdrop-filter: blur(8px);
+  padding: 0.5rem 1rem; border-radius: 100px; margin-bottom: 1.5rem;
+  font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--lavender-600);
+  border: 1px solid rgba(159, 122, 234, 0.2);
+  animation: bloom-in 1s var(--ease) 0.2s both;
+}
+.hero-badge .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--grass); animation: pulse-glow 2s infinite;
+}
+.hero h1 {
+  font-family: var(--serif); font-size: clamp(2.75rem, 5.5vw, 4.5rem);
+  font-weight: 600; line-height: 1.08; color: var(--navy);
+  letter-spacing: -0.02em;
+  animation: bloom-in 1s var(--ease) 0.35s both;
+}
+.hero h1 em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--lavender-600), var(--purple-soft));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero p {
+  margin-top: 1.5rem; font-size: 1.0625rem; line-height: 1.75;
+  color: var(--text-soft); max-width: 460px; font-weight: 400;
+  letter-spacing: -0.01em;
+  animation: bloom-in 1s var(--ease) 0.5s both;
+}
+.hero-btns {
+  margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;
+  animation: bloom-in 1s var(--ease) 0.65s both;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--lavender-500), var(--lavender-700));
+  color: white; border: none; padding: 1rem 2rem; border-radius: 100px;
+  font-weight: 600; font-size: 0.875rem; cursor: pointer;
+  box-shadow: 0 8px 28px rgba(124, 58, 237, 0.35);
+  transition: all 0.4s var(--ease-bounce);
+}
+.btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 40px rgba(124, 58, 237, 0.4); }
+.btn-secondary {
+  background: white; color: var(--lavender-700); border: 2px solid var(--lavender-300);
+  padding: 1rem 2rem; border-radius: 100px; font-weight: 600; font-size: 0.875rem;
+  cursor: pointer; transition: all 0.4s var(--ease);
+}
+.btn-secondary:hover { border-color: var(--lavender-500); background: var(--lavender-100); }
+
+/* Hero visual cluster */
+.hero-visual { position: relative; z-index: 2; height: 520px; display: flex; align-items: center; justify-content: center; }
+.hero-portrait-card {
+  position: relative; z-index: 3; width: 340px; height: 440px;
+  animation: float-slow 8s ease-in-out infinite;
+}
+.portrait-glow {
+  position: absolute; inset: -20px; border-radius: 36px;
+  background: linear-gradient(135deg, var(--lavender-400), var(--gold), var(--mint));
+  opacity: 0.45; filter: blur(24px); z-index: 0;
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+.portrait-shimmer {
+  position: absolute; inset: 0; border-radius: 28px;
+  z-index: 4; pointer-events: none; overflow: hidden;
+}
+.portrait-shimmer::after {
+  content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+  animation: shimmer 5s ease-in-out infinite;
+}
+.hero-main-img {
+  width: 100%; height: 100%; border-radius: 28px;
+  object-fit: cover; object-position: center 15%; position: relative; z-index: 2;
+  box-shadow: 0 24px 64px rgba(124, 58, 237, 0.3);
+  border: 4px solid white;
+  animation: portrait-breathe 6s ease-in-out infinite;
+}
+@keyframes portrait-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+.portrait-badge {
+  position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%);
+  z-index: 5; background: white; padding: 0.75rem 1.5rem;
+  border-radius: 100px; text-align: center; white-space: nowrap;
+  box-shadow: 0 12px 32px rgba(124, 58, 237, 0.2);
+  border: 1px solid var(--lavender-200);
+  animation: badge-float 8s ease-in-out infinite;
+}
+@keyframes badge-float {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-4px); }
+}
+.portrait-badge strong {
+  display: block; font-family: var(--serif); font-size: 1rem;
+  color: var(--lavender-700); font-weight: 600;
+}
+.portrait-badge span {
+  font-size: 0.625rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gold-dark); font-weight: 600;
+}
+.portrait-placeholder-tag {
+  position: absolute; top: 12px; right: -8px; z-index: 6;
+  background: linear-gradient(135deg, var(--lavender-500), var(--purple-soft));
+  color: white; font-size: 0.5625rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.35rem 0.65rem; border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+.hero-ring {
+  position: absolute; border-radius: 50%; border: 2px solid rgba(159, 122, 234, 0.2);
+  animation: orbit 25s linear infinite reverse;
+}
+.hero-ring-1 { width: 380px; height: 380px; }
+.hero-ring-2 { width: 440px; height: 440px; border-style: dashed; opacity: 0.5; animation-duration: 35s; }
+.orbit-img {
+  position: absolute; width: 64px; height: 64px; border-radius: 50%;
+  object-fit: cover; border: 2px solid white;
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.2);
+  top: 50%; left: 50%; margin: -32px;
+  animation: orbit 18s linear infinite;
+}
+.orbit-img:nth-child(3) { animation-delay: 0s; }
+.orbit-img:nth-child(4) { animation-delay: -4.5s; }
+.orbit-img:nth-child(5) { animation-delay: -9s; }
+.orbit-img:nth-child(6) { animation-delay: -13.5s; }
+
+/* ── TRUST STRIP ── */
+.trust-strip {
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem;
+  padding: 1.75rem 2rem; background: white;
+  border-top: 1px solid var(--lavender-200); border-bottom: 1px solid var(--lavender-200);
+}
+.trust-item {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-size: 0.8125rem; font-weight: 500; color: var(--text-soft);
+}
+.trust-item img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+
+/* ── FOOD GALLERY ── */
+.foods {
+  padding: 6rem 2.5rem; background: linear-gradient(180deg, white, var(--lavender-50));
+  position: relative; overflow: hidden;
+}
+.foods::before {
+  content: ''; position: absolute; top: 0; right: 0; width: 50%; height: 100%;
+  background: url('assets/images/lavender.jpg') center/cover no-repeat;
+  opacity: 0.06; mask-image: linear-gradient(to left, black, transparent);
+}
+.section-head { text-align: center; max-width: 640px; margin: 0 auto 3.5rem; }
+.section-tag {
+  display: inline-block; font-size: 0.6875rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--lavender-600); margin-bottom: 0.75rem;
+}
+.section-head h2 {
+  font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 600; line-height: 1.15; color: var(--navy);
+  letter-spacing: -0.02em;
+}
+.section-head h2 em { font-style: italic; color: var(--lavender-600); }
+.section-head p { margin-top: 1rem; color: var(--text-soft); line-height: 1.75; }
+
+.food-mosaic {
+  display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 220px);
+  gap: 1rem; max-width: 1100px; margin: 0 auto;
+}
+.food-tile {
+  border-radius: 20px; overflow: hidden; position: relative;
+  cursor: pointer; transition: transform 0.5s var(--ease), box-shadow 0.5s;
+}
+.food-tile:hover { transform: scale(1.03); box-shadow: 0 20px 50px rgba(124, 58, 237, 0.2); z-index: 2; }
+.food-tile img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
+.food-tile:hover img { transform: scale(1.08); }
+.food-tile.large { grid-row: span 2; }
+.food-tile.wide { grid-column: span 2; }
+.food-tile-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(76, 29, 149, 0.75), transparent 55%);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 1.25rem; color: white;
+}
+.food-tile-overlay h3 { font-family: var(--serif); font-size: 1.25rem; font-weight: 500; }
+.food-tile-overlay p { font-size: 0.75rem; opacity: 0.85; margin-top: 0.25rem; }
+
+/* ── PHILOSOPHY ── */
+.philosophy {
+  padding: 6rem 2.5rem; position: relative; overflow: hidden;
+  background: linear-gradient(135deg, var(--lavender-200) 0%, var(--lavender-100) 50%, #e8fff5 100%);
+}
+.phil-bg-grass {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
+  background: url('assets/images/herbs-grass.jpg') center bottom/cover no-repeat;
+  opacity: 0.25; mask-image: linear-gradient(to top, black, transparent);
+}
+.phil-flower {
+  position: absolute; width: 180px; height: 180px; border-radius: 50%;
+  object-fit: cover; border: 4px solid white;
+  box-shadow: 0 12px 40px rgba(124, 58, 237, 0.15);
+}
+.phil-flower-1 { top: 10%; right: 5%; animation: float 8s ease-in-out infinite; }
+.phil-flower-2 { bottom: 15%; left: 3%; width: 120px; height: 120px; animation: drift 10s ease-in-out infinite; }
+.pillar-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  max-width: 1100px; margin: 3rem auto 0; position: relative; z-index: 1;
+}
+.pillar {
+  background: rgba(255,255,255,0.85); backdrop-filter: blur(12px);
+  border-radius: 24px; padding: 2rem; border: 1px solid rgba(255,255,255,0.9);
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.08);
+  transition: all 0.5s var(--ease);
+}
+.pillar:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(124, 58, 237, 0.15); }
+.pillar-img {
+  width: 72px; height: 72px; border-radius: 16px; object-fit: cover;
+  margin-bottom: 1.25rem; border: 2px solid var(--lavender-200);
+}
+.pillar h3 { font-family: var(--serif); font-size: 1.35rem; color: var(--lavender-700); margin-bottom: 0.5rem; }
+.pillar p { font-size: 0.875rem; line-height: 1.75; color: var(--text-soft); }
+
+/* ── ASSESSMENT ── */
+.assessment {
+  padding: 6rem 2.5rem; background: white; position: relative;
+}
+.assess-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+  align-items: center; max-width: 1100px; margin: 0 auto;
+}
+.assess-grid h2 {
+  font-family: var(--serif); font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 500; line-height: 1.15; color: var(--navy);
+}
+.assess-grid h2 em { font-style: italic; color: var(--lavender-600); }
+.assess-grid > div > p { color: var(--text-soft); line-height: 1.8; margin-top: 1rem; }
+.assess-visual {
+  position: relative; border-radius: 24px; overflow: hidden; height: 280px;
+  box-shadow: 0 16px 48px rgba(124, 58, 237, 0.12);
+}
+.assess-visual img { width: 100%; height: 100%; object-fit: cover; }
+.quiz-card {
+  background: linear-gradient(145deg, var(--lavender-50), white);
+  border: 1px solid var(--lavender-200); border-radius: 24px;
+  padding: 2rem; margin-top: 2rem;
+  box-shadow: 0 12px 40px rgba(124, 58, 237, 0.08);
+}
+.quiz-label { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--lavender-600); margin-bottom: 1rem; }
+.quiz-opt {
+  display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem;
+  border-radius: 14px; margin-bottom: 0.5rem; cursor: pointer;
+  border: 2px solid transparent; background: white;
+  transition: all 0.35s var(--ease); font-size: 0.9375rem; font-weight: 500;
+}
+.quiz-opt img { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; flex-shrink: 0; }
+.quiz-opt:hover { border-color: var(--lavender-300); transform: translateX(4px); }
+.quiz-opt.active { border-color: var(--lavender-500); background: var(--lavender-100); box-shadow: 0 4px 16px rgba(124, 58, 237, 0.12); }
+.quiz-insight {
+  margin-top: 1.25rem; padding: 1.25rem; border-radius: 14px;
+  background: linear-gradient(135deg, var(--lavender-600), var(--purple-soft));
+  color: white; font-size: 0.875rem; line-height: 1.7;
+  transition: all 0.5s var(--ease);
+}
+
+/* ── PROGRAMS ── */
+.programs {
+  padding: 6rem 2.5rem;
+  background: linear-gradient(180deg, var(--lavender-50), var(--lavender-100));
+  position: relative; overflow: hidden;
+}
+.prog-deco {
+  position: absolute; width: 200px; height: 200px; border-radius: 50%;
+  object-fit: cover; opacity: 0.4; animation: float 10s ease-in-out infinite;
+}
+.prog-deco-1 { top: 5%; left: 2%; }
+.prog-deco-2 { bottom: 10%; right: 3%; animation-delay: -4s; }
+.prog-cards {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  max-width: 1100px; margin: 3rem auto 0; position: relative; z-index: 1;
+}
+.prog-card {
+  background: white; border-radius: 24px; padding: 2.5rem 2rem;
+  border: 1px solid var(--lavender-200); position: relative; overflow: hidden;
+  transition: all 0.5s var(--ease);
+}
+.prog-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--lavender-400), var(--mint));
+  transform: scaleX(0); transform-origin: left; transition: transform 0.5s var(--ease);
+}
+.prog-card:hover { transform: translateY(-8px); box-shadow: 0 24px 56px rgba(124, 58, 237, 0.15); }
+.prog-card:hover::before { transform: scaleX(1); }
+.prog-card.featured {
+  background: linear-gradient(160deg, var(--lavender-600), var(--purple-deep));
+  color: white; border: none;
+  box-shadow: 0 20px 50px rgba(124, 58, 237, 0.3);
+}
+.prog-card.featured .prog-desc, .prog-card.featured li { color: rgba(255,255,255,0.75); }
+.prog-thumb { width: 100%; height: 100px; border-radius: 14px; object-fit: cover; margin-bottom: 1.25rem; }
+.prog-tier { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--lavender-500); margin-bottom: 0.5rem; }
+.prog-card.featured .prog-tier { color: var(--gold-light); }
+.prog-price { font-family: var(--serif); font-size: 2.75rem; font-weight: 500; }
+.prog-desc { font-size: 0.875rem; color: var(--text-soft); margin: 0.5rem 0 1.25rem; }
+.prog-card ul { list-style: none; }
+.prog-card li { font-size: 0.8125rem; padding: 0.4rem 0; display: flex; align-items: center; gap: 0.5rem; }
+.prog-card li::before { content: '✦'; color: var(--lavender-500); font-size: 0.625rem; }
+.prog-card.featured li::before { color: var(--gold-light); }
+
+/* ── TESTIMONIALS ── */
+.testimonials {
+  padding: 6rem 2.5rem; background: white; position: relative;
+}
+.testi-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  max-width: 1100px; margin: 3rem auto 0;
+}
+.testi-card {
+  padding: 2rem; border-radius: 20px;
+  background: var(--lavender-50); border: 1px solid var(--lavender-200);
+  transition: all 0.4s var(--ease);
+}
+.testi-card:hover { background: white; box-shadow: 0 16px 40px rgba(124, 58, 237, 0.1); transform: translateY(-4px); }
+.testi-avatar {
+  width: 48px; height: 48px; border-radius: 50%; object-fit: cover;
+  margin-bottom: 1rem; border: 2px solid var(--lavender-300);
+}
+.testi-card p { font-family: var(--serif); font-size: 1.125rem; font-style: italic; line-height: 1.65; color: var(--text); margin-bottom: 1rem; }
+.testi-card strong { font-size: 0.8125rem; font-weight: 600; }
+.testi-card span { display: block; font-size: 0.75rem; color: var(--lavender-600); margin-top: 0.2rem; }
+
+/* ── CTA ── */
+.cta {
+  padding: 6rem 2.5rem; text-align: center; position: relative; overflow: hidden;
+  background: linear-gradient(135deg, var(--lavender-300) 0%, var(--lavender-500) 50%, var(--purple-soft) 100%);
+}
+.cta-bg {
+  position: absolute; inset: 0; opacity: 0.2;
+  background: url('assets/images/fruit-bowl.jpg') center/cover;
+  animation: drift 20s ease-in-out infinite;
+}
+.cta-content { position: relative; z-index: 1; color: white; }
+.cta h2 { font-family: var(--serif); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 500; margin-bottom: 1rem; }
+.cta p { opacity: 0.9; margin-bottom: 2rem; font-size: 1.0625rem; }
+.cta .btn-primary {
+  background: white; color: var(--lavender-700);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+.cta .btn-primary:hover { background: var(--gold-light); color: var(--navy); }
+
+footer {
+  padding: 2rem 2.5rem; background: var(--navy); color: rgba(255,255,255,0.5);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  font-size: 0.8125rem;
+}
+.footer-logo {
+  font-family: var(--serif); font-size: 1.2rem;
+  background: linear-gradient(135deg, var(--lavender-300), var(--gold-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* ── QUOTE SYSTEM ── */
+.quote-marquee-wrap {
+  overflow: hidden; padding: 1.25rem 0;
+  background: linear-gradient(90deg, var(--lavender-600), var(--purple-soft), var(--lavender-600));
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.quote-marquee-track {
+  display: flex; gap: 3rem; width: max-content;
+  animation: quote-scroll 45s linear infinite;
+}
+.quote-marquee-track span {
+  font-family: var(--serif); font-size: 1.125rem; font-style: italic;
+  color: rgba(255,255,255,0.9); white-space: nowrap;
+}
+.quote-marquee-track .dot { color: var(--gold-light); font-style: normal; opacity: 0.6; }
+@keyframes quote-scroll { to { transform: translateX(-50%); } }
+
+.statement-hero {
+  padding: 5rem 2.5rem; text-align: center; position: relative; overflow: hidden;
+  background: linear-gradient(180deg, white, var(--lavender-100));
+}
+.statement-hero::before {
+  content: '"'; position: absolute; top: 1rem; left: 50%; transform: translateX(-50%);
+  font-family: var(--serif); font-size: 8rem; line-height: 1;
+  color: var(--lavender-300); opacity: 0.5; pointer-events: none;
+}
+.statement-display {
+  font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.75rem);
+  font-weight: 600; line-height: 1.18; max-width: 900px; margin: 0 auto;
+  color: var(--navy); min-height: 2.4em;
+  letter-spacing: -0.02em;
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.statement-display.fade { opacity: 0; transform: translateY(12px); }
+.statement-display em { font-style: italic; color: var(--lavender-600); }
+.statement-dots { display: flex; justify-content: center; gap: 0.5rem; margin-top: 2rem; }
+.statement-dots button {
+  width: 8px; height: 8px; border-radius: 50%; border: none; cursor: pointer;
+  background: var(--lavender-300); transition: all 0.3s; padding: 0;
+}
+.statement-dots button.active { background: var(--lavender-600); width: 24px; border-radius: 4px; }
+
+.quote-strip {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  max-width: 1100px; margin: 0 auto; padding: 4rem 2.5rem;
+}
+.quote-card {
+  padding: 2rem; border-radius: 20px; background: white;
+  border: 1px solid var(--lavender-200);
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.06);
+  transition: all 0.5s var(--ease); position: relative; overflow: hidden;
+}
+.quote-card::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+  background: linear-gradient(180deg, var(--lavender-500), var(--gold));
+}
+.quote-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(124, 58, 237, 0.12); }
+.quote-card p {
+  font-family: var(--serif); font-size: 1.35rem; font-style: italic;
+  line-height: 1.45; color: var(--navy); margin-bottom: 1rem;
+}
+.quote-card cite {
+  font-style: normal; font-size: 0.6875rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--lavender-600);
+}
+
+.statement-full {
+  padding: 6rem 2.5rem; text-align: center;
+  background: var(--navy); color: var(--cream); position: relative; overflow: hidden;
+}
+.statement-full::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(159,122,234,0.15), transparent 70%);
+}
+.statement-full h2 {
+  font-family: var(--serif); font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+  font-weight: 500; line-height: 1.08; position: relative; z-index: 1;
+  max-width: 800px; margin: 0 auto;
+}
+.statement-full h2 .outline {
+  -webkit-text-stroke: 1.5px rgba(255,255,255,0.35); color: transparent;
+}
+.statement-full h2 em { font-style: italic; color: var(--gold-light); }
+.statement-full p {
+  margin-top: 1.5rem; font-size: 0.9375rem; opacity: 0.55; position: relative; z-index: 1;
+}
+
+.hero-tagline {
+  margin-top: 1rem; font-family: var(--serif); font-size: 1.25rem;
+  font-style: italic; color: var(--gold-light); opacity: 0.95;
+  animation: bloom-in 1s var(--ease) 0.45s both;
+}
+.hero h1 .line-accent {
+  display: block; font-size: 0.55em; font-weight: 400;
+  color: var(--gold-light); letter-spacing: 0.02em; margin-top: 0.35em;
+}
+
+.reveal { opacity: 0; transform: translateY(36px); transition: all 0.9s var(--ease); }
+.reveal.vis { opacity: 1; transform: none; }
+
+@media (max-width: 900px) {
+  .quote-strip { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  .hero, .assess-grid, .food-mosaic, .pillar-grid, .prog-cards, .testi-grid { grid-template-columns: 1fr; }
+  .food-tile.large, .food-tile.wide { grid-row: auto; grid-column: auto; }
+  .food-mosaic { grid-template-rows: auto; }
+  .hero-visual { height: 400px; margin-top: 2rem; }
+  .hero-portrait-card { width: 260px; height: 340px; }
+  .nav-links { display: none; }
+  .menu-btn { display: block; }
+  .hero-img { display: none; }
+  .orbit-img { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="logo">Diet2Dine</div>
+  <ul class="nav-links">
+    <li><a href="#foods">Foods</a></li>
+    <li><a href="#philosophy">Approach</a></li>
+    <li><a href="#assess">Assessment</a></li>
+    <li><a href="#programs">Programs</a></li>
+  </ul>
+  <button class="nav-cta">Book ₹400</button>
+  <button class="menu-btn">☰</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow hero-glow-1"></div>
+  <div class="hero-glow hero-glow-2"></div>
+  <div class="hero-glow hero-glow-3"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span> Clinical Nutrition · Tamil Nadu</div>
+    <h1>Your hormones speak a language.<br>We <em>translate it.</em></h1>
+    <p class="hero-tagline">Clinical nutrition, reimagined for your kitchen.</p>
+    <p>PCOS, thyroid & postpartum coaching — through mango, millets, idli & sambar. Not war. Not shame. Just science that listens. Rumetha G.S, M.Sc.</p>
+    <div class="hero-btns">
+      <button class="btn-primary">Start 2-Min Assessment</button>
+      <button class="btn-secondary">Book ₹400 Consult</button>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <img class="hero-img lavender-field" src="assets/images/lavender.jpg" alt="" loading="eager">
+    <img class="hero-img mango" src="assets/images/mango.jpg" alt="" loading="eager">
+    <img class="hero-img flowers" src="assets/images/flowers.jpg" alt="" loading="eager">
+    <img class="hero-img grass" src="assets/images/herbs-grass.jpg" alt="" loading="eager">
+    <div class="hero-ring hero-ring-1"></div>
+    <div class="hero-ring hero-ring-2"></div>
+    <img class="orbit-img" src="assets/images/pomegranate.jpg" alt="Pomegranate">
+    <img class="orbit-img" src="assets/images/banana.jpg" alt="Banana">
+    <img class="orbit-img" src="assets/images/berries.jpg" alt="Berries">
+    <img class="orbit-img" src="assets/images/coconut.jpg" alt="Coconut">
+    <div class="hero-portrait-card" id="heroPortrait">
+      <div class="portrait-glow"></div>
+      <img class="hero-main-img" src="assets/images/rumetha-hero.png" alt="Rumetha G.S — Clinical Nutritionist">
+      <div class="portrait-shimmer"></div>
+      <div class="portrait-badge">
+        <strong>Rumetha G.S</strong>
+        <span>M.Sc. Food & Nutrition</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trust-strip">
+  <div class="trust-item"><img src="assets/images/flowers.jpg" alt=""> M.Sc. Food & Nutrition</div>
+  <div class="trust-item"><img src="assets/images/herbs-grass.jpg" alt=""> South Indian Plans</div>
+  <div class="trust-item"><img src="assets/images/grains.jpg" alt=""> Millets & Grains</div>
+  <div class="trust-item"><img src="assets/images/lavender.jpg" alt=""> 1,000+ Women</div>
+</div>
+
+<!-- QUOTE MARQUEE -->
+<div class="quote-marquee-wrap">
+  <div class="quote-marquee-track">
+    <span>Fuel your hormones. Not fight them.</span><span class="dot">✦</span>
+    <span>We don't eliminate rice. We eliminate the shame.</span><span class="dot">✦</span>
+    <span>Your body already knows. Let's listen.</span><span class="dot">✦</span>
+    <span>Progress without punishment.</span><span class="dot">✦</span>
+    <span>Sambar is not the enemy. Starvation is.</span><span class="dot">✦</span>
+    <span>Diwali won't derail you. We plan for it.</span><span class="dot">✦</span>
+    <span>Fuel your hormones. Not fight them.</span><span class="dot">✦</span>
+    <span>We don't eliminate rice. We eliminate the shame.</span><span class="dot">✦</span>
+    <span>Your body already knows. Let's listen.</span><span class="dot">✦</span>
+    <span>Progress without punishment.</span><span class="dot">✦</span>
+    <span>Sambar is not the enemy. Starvation is.</span><span class="dot">✦</span>
+    <span>Diwali won't derail you. We plan for it.</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- ROTATING STATEMENTS -->
+<section class="statement-hero reveal">
+  <p class="statement-display" id="statementText">Fuel your hormones. <em>Not fight them.</em></p>
+  <div class="statement-dots" id="statementDots"></div>
+</section>
+
+<!-- FOOD MOSAIC -->
+<section class="foods" id="foods">
+  <div class="section-head reveal">
+    <div class="section-tag">✦ Real Foods · Real Results</div>
+    <h2>Your plate is already <em>beautiful.</em> We balance it.</h2>
+    <p>We don't eliminate rice. We eliminate the shame around it. Vibrant fruits, herbs & millets — optimized for your hormones, never erased from your life.</p>
+  </div>
+  <div class="food-mosaic">
+    <div class="food-tile large reveal">
+      <img src="assets/images/mango.jpg" alt="Mango">
+      <div class="food-tile-overlay"><h3>Mango & Seasonal Fruits</h3><p>Timed for insulin balance</p></div>
+    </div>
+    <div class="food-tile reveal">
+      <img src="assets/images/lavender.jpg" alt="Lavender">
+      <div class="food-tile-overlay"><h3>Lavender & Herbs</h3><p>Calming cycle support</p></div>
+    </div>
+    <div class="food-tile reveal">
+      <img src="assets/images/grains.jpg" alt="Millets">
+      <div class="food-tile-overlay"><h3>Millets & Grains</h3><p>Ragi, kambu, red rice</p></div>
+    </div>
+    <div class="food-tile wide reveal">
+      <img src="assets/images/herbs-grass.jpg" alt="Fresh grass and herbs">
+      <div class="food-tile-overlay"><h3>Fresh Herbs & Greens</h3><p>Curry leaves, spinach, moringa for vitality</p></div>
+    </div>
+    <div class="food-tile reveal">
+      <img src="assets/images/pomegranate.jpg" alt="Pomegranate">
+      <div class="food-tile-overlay"><h3>Pomegranate</h3><p>PCOS antioxidants</p></div>
+    </div>
+    <div class="food-tile reveal">
+      <img src="assets/images/coconut.jpg" alt="Coconut">
+      <div class="food-tile-overlay"><h3>Coconut</h3><p>Thyroid healthy fats</p></div>
+    </div>
+    <div class="food-tile reveal">
+      <img src="assets/images/fruit-bowl.jpg" alt="Mixed fruits">
+      <div class="food-tile-overlay"><h3>Mixed Fruits</h3><p>Rainbow nutrition</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy" id="philosophy">
+  <div class="phil-bg-grass"></div>
+  <img class="phil-flower phil-flower-1" src="assets/images/flowers.jpg" alt="Flowers">
+  <img class="phil-flower phil-flower-2" src="assets/images/wildflowers.jpg" alt="Wildflowers">
+
+  <div class="section-head reveal">
+    <div class="section-tag">✦ Our Philosophy</div>
+    <h2>Every diet asks you to become someone else. <em>We ask you to become more yourself.</em></h2>
+  </div>
+  <div class="pillar-grid">
+    <div class="pillar reveal">
+      <img class="pillar-img" src="assets/images/flowers.jpg" alt="Flowers">
+      <h3>Hormone Harmony</h3>
+      <p>PCOS, thyroid, postpartum — whole-food protocols rooted in insulin science, not deprivation.</p>
+    </div>
+    <div class="pillar reveal">
+      <img class="pillar-img" src="assets/images/grains.jpg" alt="Grains">
+      <h3>Cultural Wisdom</h3>
+      <p>South Indian kitchens hold centuries of intelligence. We amplify it with modern science.</p>
+    </div>
+    <div class="pillar reveal">
+      <img class="pillar-img" src="assets/images/mango.jpg" alt="Mango">
+      <h3>Seasonal Living</h3>
+      <p>Festival plans, travel diets, mango season — nutrition that flows with your calendar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BIG STATEMENT -->
+<section class="statement-full reveal">
+  <h2><span class="outline">Fuel your</span> hormones.<br><em>Not fight them.</em></h2>
+  <p>Science without sterility. Culture without compromise.</p>
+</section>
+
+<!-- QUOTE CARDS -->
+<div class="quote-strip">
+  <div class="quote-card reveal">
+    <p>"Clinical nutrition, reimagined for your kitchen."</p>
+    <cite>The Diet2Dine Promise</cite>
+  </div>
+  <div class="quote-card reveal">
+    <p>"Your hormones speak a language. We translate it."</p>
+    <cite>Our Approach</cite>
+  </div>
+  <div class="quote-card reveal">
+    <p>"Become more yourself — not someone else's meal plan."</p>
+    <cite>Our Philosophy</cite>
+  </div>
+</div>
+
+<!-- ASSESSMENT -->
+<section class="assessment" id="assess">
+  <div class="assess-grid">
+    <div class="reveal">
+      <div class="section-tag">✦ 2-Minute Assessment</div>
+      <h2>Your body is already talking. <em>Are you listening?</em></h2>
+      <p>Two minutes. One honest answer. A micro-insight before your ₹400 strategy session with Rumetha G.S.</p>
+      <div class="assess-visual">
+        <img src="assets/images/lavender.jpg" alt="Lavender wellness">
+      </div>
+    </div>
+    <div class="quiz-card reveal">
+      <div class="quiz-label">Primary concern</div>
+      <div class="quiz-opt active" data-i="Insulin resistance may affect your cycle. We'll balance South Indian carbs — mango, rice, millets — not remove them.">
+        <img src="assets/images/flowers.jpg" alt="">
+        Irregular cycles / PCOS
+      </div>
+      <div class="quiz-opt" data-i="Fatigue often traces to thyroid-adrenal interplay. Curry leaves, millets, and lavender herbal teas are our first tools.">
+        <img src="assets/images/herbs-grass.jpg" alt="">
+        Constant fatigue
+      </div>
+      <div class="quiz-opt" data-i="Postpartum retention is metabolic. Recovery with coconut, ragi, warm foods — honoring lactation.">
+        <img src="assets/images/coconut.jpg" alt="">
+        Postpartum weight
+      </div>
+      <div class="quiz-opt" data-i="Bloating stems from gut health. Fermented idli, probiotic foods, and gentle herb teas within your diet.">
+        <img src="assets/images/grains.jpg" alt="">
+        Bloating / IBS
+      </div>
+      <div class="quiz-insight" id="insight">Insulin resistance may affect your cycle. We'll balance South Indian carbs — mango, rice, millets — not remove them.</div>
+      <button class="btn-primary" style="width:100%;margin-top:1.25rem">Book Strategy Call — ₹400</button>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+<section class="programs" id="programs">
+  <img class="prog-deco prog-deco-1" src="assets/images/wildflowers.jpg" alt="">
+  <img class="prog-deco prog-deco-2" src="assets/images/fruit-bowl.jpg" alt="">
+  <div class="section-head reveal">
+    <div class="section-tag">✦ Programs</div>
+    <h2>Transformation that <em>stays.</em> Not resets.</h2>
+  </div>
+  <div class="prog-cards">
+    <div class="prog-card reveal">
+      <img class="prog-thumb" src="assets/images/herbs-grass.jpg" alt="Herbs">
+      <div class="prog-tier">1 Month · Reset</div>
+      <div class="prog-price">₹2,500</div>
+      <p class="prog-desc">Metabolic jumpstart</p>
+      <ul><li>Onboarding call</li><li>Custom meal plan</li><li>Weekly follow-ups</li></ul>
+    </div>
+    <div class="prog-card featured reveal">
+      <img class="prog-thumb" src="assets/images/lavender.jpg" alt="Lavender">
+      <div class="prog-tier">3 Months · Bloom</div>
+      <div class="prog-price">₹6,500</div>
+      <p class="prog-desc">PCOS & sustainable change</p>
+      <ul><li>Full protocol</li><li>Festival & travel plans</li><li>Daily WhatsApp</li></ul>
+    </div>
+    <div class="prog-card reveal">
+      <img class="prog-thumb" src="assets/images/mango.jpg" alt="Mango">
+      <div class="prog-tier">6 Months · Flourish</div>
+      <div class="prog-price">₹12,000</div>
+      <p class="prog-desc">Long-term recomposition</p>
+      <ul><li>Complete care</li><li>Preconception wellness</li><li>Maintenance plan</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-head reveal">
+    <div class="section-tag">✦ Stories</div>
+    <h2>Voices from the <em>garden.</em></h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <img class="testi-avatar" src="assets/images/avatar-1.jpg" alt="">
+      <p>"My cycle returned in ninety days. Mango season was part of my plan — not banned."</p>
+      <strong>Priya M.</strong><span>PCOS · Chennai</span>
+    </div>
+    <div class="testi-card reveal">
+      <img class="testi-avatar" src="assets/images/avatar-2.jpg" alt="">
+      <p>"Thyroid normalized. The Pongal plan kept me on track without missing a single sweet."</p>
+      <strong>Anitha R.</strong><span>Thyroid · Coimbatore</span>
+    </div>
+    <div class="testi-card reveal">
+      <img class="testi-avatar" src="assets/images/avatar-3.jpg" alt="">
+      <p>"Five kg lighter. Idli, sambar, and ragi still on my plate every day."</p>
+      <strong>Divya S.</strong><span>Weight · Madurai</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="cta-bg"></div>
+  <div class="cta-content reveal">
+    <h2>Your body already knows.<br><em>Let's decode it together.</em></h2>
+    <p>₹400 consultation with Rumetha G.S — credited toward any program. One conversation. No shame. No starvation.</p>
+    <button class="btn-primary">Book Consultation</button>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Diet2Dine</div>
+  <span>© 2026 Rumetha G.S · M.Sc. Food & Nutrition</span>
+  <span>Lavender & Bloom Edition</span>
+</footer>
+
+<script>
+// Rotating statement quotes
+const statements = [
+  'Fuel your hormones. <em>Not fight them.</em>',
+  'Clinical nutrition, <em>reimagined for your kitchen.</em>',
+  'Your hormones speak a language. <em>We translate it.</em>',
+  'We don\'t eliminate rice. <em>We eliminate the shame.</em>',
+  'Your body already knows. <em>Let\'s listen.</em>',
+  'Progress without punishment. <em>Ever.</em>'
+];
+let stmtIdx = 0;
+const stmtEl = document.getElementById('statementText');
+const dotsEl = document.getElementById('statementDots');
+
+statements.forEach((_, i) => {
+  const btn = document.createElement('button');
+  btn.addEventListener('click', () => { stmtIdx = i; showStatement(); resetTimer(); });
+  dotsEl.appendChild(btn);
+});
+
+function showStatement() {
+  stmtEl.classList.add('fade');
+  setTimeout(() => {
+    stmtEl.innerHTML = statements[stmtIdx];
+    stmtEl.classList.remove('fade');
+    dotsEl.querySelectorAll('button').forEach((b, i) => b.classList.toggle('active', i === stmtIdx));
+  }, 300);
+}
+
+let stmtTimer;
+function resetTimer() {
+  clearInterval(stmtTimer);
+  stmtTimer = setInterval(() => {
+    stmtIdx = (stmtIdx + 1) % statements.length;
+    showStatement();
+  }, 5000);
+}
+showStatement();
+resetTimer();
+
+// Nav scroll
+window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 50));
+
+// Quiz
+document.querySelectorAll('.quiz-opt').forEach(opt => {
+  opt.addEventListener('click', () => {
+    document.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('active'));
+    opt.classList.add('active');
+    const el = document.getElementById('insight');
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(8px)';
+    setTimeout(() => {
+      el.textContent = opt.dataset.i;
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    }, 200);
+  });
+});
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Parallax on hero glows
+document.addEventListener('mousemove', e => {
+  const x = (e.clientX / innerWidth - 0.5) * 30;
+  const y = (e.clientY / innerHeight - 0.5) * 20;
+  document.querySelectorAll('.hero-glow').forEach((g, i) => {
+    g.style.transform = `translate(${x * (i + 1) * 0.3}px, ${y * (i + 1) * 0.3}px)`;
+  });
+});
+
+// Stagger food tiles on scroll
+document.querySelectorAll('.food-tile').forEach((tile, i) => {
+  tile.style.transitionDelay = `${i * 0.08}s`;
+});
+</script>
+</body>
+</html>
