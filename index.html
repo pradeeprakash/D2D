@@ -346,9 +346,11 @@ body.page-ready .trust-item:nth-child(4) { transition-delay: 1.15s; }
   position: absolute; width: 180px; height: 180px; border-radius: 50%;
   object-fit: cover; border: 4px solid white;
   box-shadow: 0 12px 40px rgba(124, 58, 237, 0.15);
+  z-index: 0; pointer-events: none;
 }
 .phil-flower-1 { top: 10%; right: 5%; animation: float 8s ease-in-out infinite; }
 .phil-flower-2 { bottom: 15%; left: 3%; width: 120px; height: 120px; animation: drift 10s ease-in-out infinite; }
+.philosophy .section-head { position: relative; z-index: 2; }
 .pillar-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
   max-width: 1100px; margin: 3rem auto 0; position: relative; z-index: 1;
@@ -517,9 +519,11 @@ body.page-ready .trust-item:nth-child(4) { transition-delay: 1.15s; }
 .prog-deco {
   position: absolute; width: 200px; height: 200px; border-radius: 50%;
   object-fit: cover; opacity: 0.4; animation: float 10s ease-in-out infinite;
+  z-index: 0; pointer-events: none;
 }
 .prog-deco-1 { top: 5%; left: 2%; }
 .prog-deco-2 { bottom: 10%; right: 3%; animation-delay: -4s; }
+.programs .section-head { position: relative; z-index: 2; }
 .prog-cards {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
   max-width: 1100px; margin: 3rem auto 0; position: relative; z-index: 1;
@@ -733,6 +737,13 @@ footer {
 
 @media (max-width: 600px) {
   .specialty-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 1024px) {
+  .phil-flower, .prog-deco { display: none !important; }
+  .philosophy, .programs { padding: 4rem 1.5rem; }
+  .philosophy .section-head,
+  .programs .section-head { padding: 0 0.5rem; }
 }
 
 @media (max-width: 900px) {
@@ -991,8 +1002,8 @@ footer {
 <!-- PHILOSOPHY -->
 <section class="philosophy" id="philosophy">
   <div class="phil-bg-grass"></div>
-  <img class="phil-flower phil-flower-1" src="assets/images/flowers.jpg" alt="Flowers">
-  <img class="phil-flower phil-flower-2" src="assets/images/wildflowers.jpg" alt="Wildflowers">
+  <img class="phil-flower phil-flower-1" src="assets/images/flowers.jpg" alt="" aria-hidden="true">
+  <img class="phil-flower phil-flower-2" src="assets/images/wildflowers.jpg" alt="" aria-hidden="true">
 
   <div class="section-head reveal">
     <div class="section-tag">✦ Our Philosophy</div>
@@ -1076,8 +1087,8 @@ footer {
 
 <!-- PROGRAMS -->
 <section class="programs" id="programs">
-  <img class="prog-deco prog-deco-1" src="assets/images/wildflowers.jpg" alt="">
-  <img class="prog-deco prog-deco-2" src="assets/images/fruit-bowl.jpg" alt="">
+  <img class="prog-deco prog-deco-1" src="assets/images/wildflowers.jpg" alt="" aria-hidden="true">
+  <img class="prog-deco prog-deco-2" src="assets/images/fruit-bowl.jpg" alt="" aria-hidden="true">
   <div class="section-head reveal">
     <div class="section-tag">✦ Programs</div>
     <h2>Transformation that <em>stays.</em> Not resets.</h2>
