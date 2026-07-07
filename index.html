@@ -421,17 +421,16 @@ body.page-ready .trust-item:nth-child(4) { transition-delay: 1.15s; }
 }
 .specialty-thumb-wrap {
   position: relative; height: 96px; overflow: hidden;
+  background: linear-gradient(145deg, var(--lavender-100), var(--lavender-50));
+  display: flex; align-items: center; justify-content: center;
 }
-.specialty-thumb-wrap::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(30, 16, 64, 0.35), transparent 60%);
-  pointer-events: none;
+.specialty-icon {
+  width: 52px; height: 52px; color: var(--lavender-600);
+  transition: transform 0.55s var(--ease), color 0.4s var(--ease);
 }
-.specialty-thumb {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  transition: transform 0.55s var(--ease);
+.specialty-item:hover .specialty-icon {
+  transform: scale(1.1); color: var(--purple-soft);
 }
-.specialty-item:hover .specialty-thumb { transform: scale(1.08); }
 .specialty-num {
   position: absolute; top: 0.6rem; left: 0.6rem; z-index: 1;
   display: inline-flex; align-items: center; justify-content: center;
@@ -446,15 +445,26 @@ body.page-ready .trust-item:nth-child(4) { transition-delay: 1.15s; }
   font-family: var(--serif); font-size: 0.9375rem; font-weight: 500;
   color: var(--navy); line-height: 1.35;
 }
-.specialty-item.logo-thumb .specialty-thumb-wrap {
-  background: linear-gradient(135deg, var(--lavender-100), var(--lavender-50));
-  display: flex; align-items: center; justify-content: center;
-}
-.specialty-item.logo-thumb .specialty-thumb {
-  width: 52px; height: 52px; object-fit: contain;
-}
-.specialty-item.logo-thumb .specialty-thumb-wrap::after { display: none; }
-.specialty-item.logo-thumb:hover .specialty-thumb { transform: scale(1.04); }
+.specialty-item--weight .specialty-thumb-wrap { background: linear-gradient(145deg, #e8fff5, #f0fdf8); }
+.specialty-item--weight .specialty-icon { color: #059669; }
+.specialty-item--recomp .specialty-thumb-wrap { background: linear-gradient(145deg, #ede9fe, #f5f3ff); }
+.specialty-item--recomp .specialty-icon { color: var(--lavender-700); }
+.specialty-item--pcos .specialty-thumb-wrap { background: linear-gradient(145deg, #fce7f3, #fdf2f8); }
+.specialty-item--pcos .specialty-icon { color: #be185d; }
+.specialty-item--diabetes .specialty-thumb-wrap { background: linear-gradient(145deg, #dbeafe, #eff6ff); }
+.specialty-item--diabetes .specialty-icon { color: #2563eb; }
+.specialty-item--thyroid .specialty-thumb-wrap { background: linear-gradient(145deg, #fef3c7, #fffbeb); }
+.specialty-item--thyroid .specialty-icon { color: #d97706; }
+.specialty-item--preconception .specialty-thumb-wrap { background: linear-gradient(145deg, #fce7f3, #fff1f2); }
+.specialty-item--preconception .specialty-icon { color: #e11d48; }
+.specialty-item--postpartum .specialty-thumb-wrap { background: linear-gradient(145deg, #f3e8ff, #faf5ff); }
+.specialty-item--postpartum .specialty-icon { color: var(--lavender-700); }
+.specialty-item--liver .specialty-thumb-wrap { background: linear-gradient(145deg, #ffedd5, #fff7ed); }
+.specialty-item--liver .specialty-icon { color: #ea580c; }
+.specialty-item--lifestyle .specialty-thumb-wrap { background: linear-gradient(145deg, #d1fae5, #ecfdf5); }
+.specialty-item--lifestyle .specialty-icon { color: #047857; }
+.specialty-item--others .specialty-thumb-wrap { background: linear-gradient(145deg, var(--lavender-100), white); }
+.specialty-item--others .specialty-icon { width: 44px; height: 44px; color: var(--lavender-600); }
 
 /* ── ASSESSMENT ── */
 .assessment {
@@ -832,44 +842,84 @@ footer {
     <p>Evidence-based guidance across a wide range of conditions and lifestyle needs — tailored to your body, your culture, your kitchen.</p>
   </div>
   <div class="specialty-grid">
-    <div class="specialty-item reveal">
-      <div class="specialty-thumb-wrap"><span class="specialty-num">1</span><img class="specialty-thumb" src="assets/images/salad-greens.jpg" alt=""></div>
+    <div class="specialty-item specialty-item--weight reveal">
+      <div class="specialty-thumb-wrap"><span class="specialty-num">1</span>
+        <svg class="specialty-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="10" y="22" width="28" height="16" rx="3"/><path d="M18 22v-6a6 6 0 0 1 12 0v6"/><circle cx="24" cy="30" r="4"/><path d="M24 34v5"/><path d="M20 38h8"/>
+        </svg>
+      </div>
       <div class="specialty-body"><h3>Weight Loss</h3></div>
     </div>
-    <div class="specialty-item reveal">
-      <div class="specialty-thumb-wrap"><span class="specialty-num">2</span><img class="specialty-thumb" src="assets/images/yogurt-berries.jpg" alt=""></div>
+    <div class="specialty-item specialty-item--recomp reveal">
+      <div class="specialty-thumb-wrap"><span class="specialty-num">2</span>
+        <svg class="specialty-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="24" cy="9" r="4"/><path d="M24 13v10"/><path d="M15 20h18"/><path d="M17 30v11"/><path d="M31 30v11"/><path d="M19 17c2 2 8 2 10 0"/><ellipse cx="24" cy="22" rx="7" ry="5"/>
+        </svg>
+      </div>
       <div class="specialty-body"><h3>Body Recomposition</h3></div>
     </div>
-    <div class="specialty-item reveal">
-      <div class="specialty-thumb-wrap"><span class="specialty-num">3</span><img class="specialty-thumb" src="assets/images/pomegranate.jpg" alt=""></div>
+    <div class="specialty-item specialty-item--pcos reveal">
+      <div class="specialty-thumb-wrap"><span class="specialty-num">3</span>
+        <svg class="specialty-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="18" cy="24" r="9"/><circle cx="30" cy="24" r="9"/><circle cx="18" cy="20" r="2" fill="currentColor"/><circle cx="22" cy="26" r="1.5" fill="currentColor"/><circle cx="30" cy="21" r="2" fill="currentColor"/><circle cx="34" cy="27" r="1.5" fill="currentColor"/><path d="M24 8v4M24 36v4"/>
+        </svg>
+      </div>
       <div class="specialty-body"><h3>PCOS</h3></div>
     </div>
-    <div class="specialty-item reveal">
-      <div class="specialty-thumb-wrap"><span class="specialty-num">4</span><img class="specialty-thumb" src="assets/images/grains.jpg" alt=""></div>
+    <div class="specialty-item specialty-item--diabetes reveal">
+      <div class="specialty-thumb-wrap"><span class="specialty-num">4</span>
+        <svg class="specialty-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M24 8c-4 6-8 10-8 16a8 8 0 1 0 16 0c0-6-4-10-8-16z"/><rect x="30" y="28" width="12" height="14" rx="2"/><path d="M33 33h6"/><path d="M33 37h4"/>
+        </svg>
+      </div>
       <div class="specialty-body"><h3>Type 2 Diabetes</h3></div>
     </div>
-    <div class="specialty-item reveal">
-      <div class="specialty-thumb-wrap"><span class="specialty-num">5</span><img class="specialty-thumb" src="assets/images/coconut.jpg" alt=""></div>
+    <div class="specialty-item specialty-item--thyroid reveal">
+      <div class="specialty-thumb-wrap"><span class="specialty-num">5</span>
+        <svg class="specialty-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M24 14c-8 0-12 4-12 8s4 8 12 8 12-4 12-8-4-8-12-8z"/><path d="M12 22c-4 2-6 5-6 8s2 6 6 8"/><path d="M36 22c4 2 6 5 6 8s-2 6-6 8"/><path d="M24 10v4"/>
+        </svg>
+      </div>
       <div class="specialty-body"><h3>Thyroid Health</h3></div>
     </div>
-    <div class="specialty-item reveal">
-      <div class="specialty-thumb-wrap"><span class="specialty-num">6</span><img class="specialty-thumb" src="assets/images/wildflowers.jpg" alt=""></div>
+    <div class="specialty-item specialty-item--preconception reveal">
+      <div class="specialty-thumb-wrap"><span class="specialty-num">6</span>
+        <svg class="specialty-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M24 36V22"/><path d="M24 22c-6-4-10-2-10 4s4 8 10 4"/><path d="M24 22c6-4 10-2 10 4s-4 8-10 4"/><circle cx="24" cy="14" r="5"/><path d="M20 38h8"/>
+        </svg>
+      </div>
       <div class="specialty-body"><h3>Preconception Nutrition</h3></div>
     </div>
-    <div class="specialty-item reveal">
-      <div class="specialty-thumb-wrap"><span class="specialty-num">7</span><img class="specialty-thumb" src="assets/images/fruit-bowl.jpg" alt=""></div>
+    <div class="specialty-item specialty-item--postpartum reveal">
+      <div class="specialty-thumb-wrap"><span class="specialty-num">7</span>
+        <svg class="specialty-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="20" cy="12" r="4"/><path d="M12 38V28c0-4 3-6 8-6s8 2 8 6v10"/><circle cx="34" cy="20" r="3"/><path d="M30 38V30c0-2 2-4 5-4"/>
+        </svg>
+      </div>
       <div class="specialty-body"><h3>Postpartum Care</h3></div>
     </div>
-    <div class="specialty-item reveal">
-      <div class="specialty-thumb-wrap"><span class="specialty-num">8</span><img class="specialty-thumb" src="assets/images/herbs-grass.jpg" alt=""></div>
+    <div class="specialty-item specialty-item--liver reveal">
+      <div class="specialty-thumb-wrap"><span class="specialty-num">8</span>
+        <svg class="specialty-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 20c0-6 4-10 10-10s10 4 10 10c6 0 10 4 10 10s-4 10-10 10H18c-6 0-10-4-10-10s4-10 10-10z"/><path d="M22 16c2 4 2 8 0 12"/><path d="M28 18c1 3 1 6 0 9"/>
+        </svg>
+      </div>
       <div class="specialty-body"><h3>Fatty Liver</h3></div>
     </div>
-    <div class="specialty-item reveal">
-      <div class="specialty-thumb-wrap"><span class="specialty-num">9</span><img class="specialty-thumb" src="assets/images/lavender.jpg" alt=""></div>
+    <div class="specialty-item specialty-item--lifestyle reveal">
+      <div class="specialty-thumb-wrap"><span class="specialty-num">9</span>
+        <svg class="specialty-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M34 14A14 14 0 1 1 18 30"/><path d="M34 8v6h-6"/><path d="M24 22l-4 8h8l-4 8"/>
+        </svg>
+      </div>
       <div class="specialty-body"><h3>Long-term Sustainable Lifestyle Changes</h3></div>
     </div>
-    <div class="specialty-item logo-thumb reveal">
-      <div class="specialty-thumb-wrap"><span class="specialty-num">10</span><img class="specialty-thumb" src="assets/images/d2d-logo.png" alt="Diet2Dine"></div>
+    <div class="specialty-item specialty-item--others reveal">
+      <div class="specialty-thumb-wrap"><span class="specialty-num">10</span>
+        <svg class="specialty-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="24" cy="24" r="14"/><path d="M24 16v16"/><path d="M16 24h16"/>
+        </svg>
+      </div>
       <div class="specialty-body"><h3>Others</h3></div>
     </div>
   </div>
